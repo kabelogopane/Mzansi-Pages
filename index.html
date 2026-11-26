@@ -42,7 +42,7 @@
     </aside>
     <main class="main" id="mainContent" aria-live="polite">
       <div class="page-heading"><div><div class="eyebrow">Your community starts here</div><h1>Good evening, welcome.</h1><p class="sub">Your people. Your world. Your pages.</p></div></div>
-      <section class="welcome"><h2>Every connection starts <strong>somewhere.</strong></h2><p>Meet people, explore communities and discover new opportunities — all in one space.</p><div class="welcome-actions"><button class="btn btn-primary" data-go="discover">Explore Mzansi-Pages</button><button class="btn btn-light" data-go="communities">Find a community</button></div></section>
+      <section class="welcome"><h2>Every connection starts <strong>somewhere.</strong></h2><p>Meet people, explore communities and discover new opportunities — all in one space.</p><div class="welcome-actions"><button class="btn btn-primary" data-go="discover">Explore Mzansi-Pages</button><button class="btn btn-light" data-action="signup">Create account · 18+</button></div></section>
       <section class="composer"><div class="composer-top"><div class="avatar">MP</div><textarea id="postInput" rows="1" placeholder="What's happening in your world?"></textarea></div><div class="composer-bottom"><div class="composer-tools"><button class="tool" data-tool="Photo">▧ Photo</button><button class="tool" data-tool="Question">? Ask a question</button><button class="tool" data-tool="Feeling">✧ Feeling</button></div><button class="btn btn-primary" id="publishPost">Share post</button></div></section>
       <div id="feed">
         <article class="post"><div class="post-head"><div class="avatar">TN</div><div><div class="post-user">Thando Ndlovu</div><div class="post-meta">Community builder · 24 min ago</div></div><button class="post-menu" aria-label="More options">···</button></div><p class="post-text">A good community is built when people share what they know and make room for others to grow. What is one skill you'd love to learn this year?</p><div class="post-art"><b>Good things happen when we connect.</b><span>Mzansi-Pages · Community conversations</span></div><div class="post-actions"><button class="post-action" data-like>♡ Like <span>18</span></button><button class="post-action" data-comment>▢ Comment</button><button class="post-action" data-share>↗ Share</button></div></article>
@@ -69,6 +69,7 @@
 <div class="toast" id="toast" role="status"></div>
 <script>
   const pages={
+    dating:{eyebrow:"Adults only · 18+",title:"Dating & Relationships",sub:"A separate, optional adult experience with additional age assurance and privacy safeguards.",empty:true,icon:"♡",message:"Dating is restricted to verified adults aged 18 and older. Dating, matching and dating messages are not enabled in this prototype."},
     discover:{eyebrow:"Explore what's possible",title:"Discover",sub:"Find people, conversations and communities that interest you.",cards:[["♧","People to discover","Find new connections through shared interests.","Explore people"],["◎","Popular communities","Discover spaces built around ideas and interests.","Browse communities"],["✧","Trending conversations","See what people are talking about.","Explore topics"],["▣","Events and activities","Find ways to learn, create and connect.","Coming soon"]]},
     communities:{eyebrow:"Find your people",title:"Communities",sub:"Join a space, share what you know and learn from others.",cards:[["◈","Creators & Makers","A community for photographers, designers and creative thinkers.","Explore community"],["⌘","Technology & Innovation","Talk about technology, digital skills and new ideas.","Explore community"],["▤","Learning Together","Share resources, ask questions and grow your skills.","Explore community"],["↗","Entrepreneurs Circle","Connect with people building ideas and businesses.","Explore community"]]},
     connections:{eyebrow:"Your network",title:"Connections",sub:"Build meaningful relationships with people across your world.",cards:[["♧","Your connections","People you have connected with will appear here.","View connections"],["✧","Suggested for you","Discover people who share your interests.","Find people"]]},
@@ -84,6 +85,10 @@
   let toastTimer;function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),2400)}
   function openModal(html){document.getElementById("modalContent").innerHTML=html;document.getElementById("modalBackdrop").classList.add("open")}
   function closeModal(){document.getElementById("modalBackdrop").classList.remove("open")}
+
+  function openSignup(){
+    openModal('<h2 id="modalTitle">Create your account</h2><p>Mzansi-Pages is planned as an adults-only platform for its initial release.</p><label class="field"><span>Date of birth</span><input id="signupDob" type="date"></label><div class="notice">You must be at least 18 years old to register. A date-of-birth declaration alone is not full age verification.</div><div id="ageResult" aria-live="polite"></div><div class="modal-actions"><button class="btn btn-outline" data-close>Cancel</button><button class="btn btn-primary" id="checkAge">Check eligibility</button></div>');
+  }
   document.addEventListener("click",e=>{
     const nav=e.target.closest("[data-page]");if(nav){showPage(nav.dataset.page);return}
     const go=e.target.closest("[data-go]");if(go){showPage(go.dataset.go);return}
@@ -95,6 +100,19 @@
     if(e.target.closest("[data-card-action]")){toast("This feature is part of the next development phase.");return}
     if(e.target.closest("#publishPost")){const input=document.getElementById("postInput");const text=input?.value.trim();if(!text){toast("Write something before sharing.");return}const card=document.createElement("article");card.className="post";const safe=text.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));card.innerHTML='<div class="post-head"><div class="avatar">MP</div><div><div class="post-user">Mzansi-Pages member</div><div class="post-meta">Just now · Demo post</div></div></div><p class="post-text">'+safe+'</p><div class="post-actions"><button class="post-action" data-like>♡ Like <span>0</span></button><button class="post-action" data-comment>▢ Comment</button><button class="post-action" data-share>↗ Share</button></div>';document.getElementById("feed").prepend(card);input.value="";toast("Demo post added to this preview.");return}
     if(e.target.closest("#profileShortcut")){showPage("profile");return}
+    if(e.target.closest('[data-action="signup"]')){openSignup();return}
+    if(e.target.closest("[data-close]")){closeModal();return}
+    if(e.target.closest("#checkAge")){
+      const raw=document.getElementById("signupDob").value;
+      const result=document.getElementById("ageResult");
+      if(!raw){result.innerHTML='<div class="notice">Please enter your date of birth.</div>';return}
+      const dob=new Date(raw+"T00:00:00"),today=new Date();
+      let age=today.getFullYear()-dob.getFullYear();
+      if(today.getMonth()<dob.getMonth()||(today.getMonth()===dob.getMonth()&&today.getDate()<dob.getDate()))age--;
+      if(dob>today||age<0){result.innerHTML='<div class="notice">Please enter a valid date of birth.</div>';return}
+      if(age<18){result.innerHTML='<div class="notice">You are not eligible to register. Mzansi-Pages is restricted to adults aged 18 and older.</div>';return}
+      result.innerHTML='<div class="notice" style="background:#edf8f0;border-color:#cdebd4;color:#28633a">You meet the age requirement. Full registration will only be available after secure age assurance and account services are connected.</div>';return
+    }
   });
   document.getElementById("modalBackdrop").addEventListener("click",e=>{if(e.target.id==="modalBackdrop")closeModal()});
   document.getElementById("globalSearch").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.value.trim()){showPage("discover");toast("Search results will appear when search is connected.");}});
