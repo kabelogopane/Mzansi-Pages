@@ -2,61 +2,79 @@
 
 **Your People. Your World. Your Pages.**
 
-Mzansi-Pages is a responsive social networking application prototype with a modern African technology identity. The interface explores social feeds, discovery, communities, connections, professional opportunities and a separate adults-only dating area.
+Mzansi-Pages is a responsive, installable social-networking **preview app** with a modern African technology identity.
 
-## Current status
+## Preview features
 
-This repository contains a **front-end prototype** built with HTML, CSS and vanilla JavaScript. It is designed to be previewed through GitHub Pages.
+- Responsive desktop and mobile interface
+- Installable Progressive Web App (PWA) manifest and app icon
+- Offline app-shell caching after the first successful visit
+- Home feed with sample content
+- Create demo text posts and save them in this browser
+- Demo likes and navigation across product areas
+- Discovery, communities, connections, messages, opportunities and profile screens
+- Separate 18+ dating information screen; no dating, matching or dating messages
+- Privacy notice and draft community guidelines
 
-### Included in the prototype
-- Responsive desktop and mobile layouts
-- Mzansi-Pages brand styling
-- Home feed with sample posts
-- Demo post creation and like interactions
-- Navigation for discovery, communities, connections, messages, dating, opportunities, notifications and profile
-- Sample community and people discovery cards
+## Important: what this release is (and is not)
 
-### Not connected yet
-- Real user accounts or authentication
-- Database or persistent posts
-- Real photo/video uploads
-- Private or group messaging
-- Live notifications
-- Production search and recommendation systems
-- Identity or age-assurance provider
-- Dating profiles, matching or dating messages
+This repository is ready to publish as a **public preview**. It is not yet a production multi-user social network.
 
-**Important:** Do not use this prototype to collect real personal information. Registration and social actions are demonstrations only. Production registration must use secure server-side age checks and a suitable age-assurance process. Dating must remain restricted to verified adults aged 18+, with separate consent, privacy, blocking and reporting controls.
+- Demo posts are saved in the current browser's local storage. They are not visible to other users and do not sync across devices.
+- There is no real account registration, login, database, photo upload, private messaging, live notification, or server-side search.
+- Like and connection actions are demonstrations.
+- Do not collect real personal, contact, identity or sensitive information through this preview.
+- The date-of-birth screen is only a prototype eligibility check, not proof of age.
+
+The planned first release is adults-only. Production must implement reliable age assurance and server-side enforcement before account creation or access. Any future dating area must be separately gated to verified adults and must include appropriate consent, privacy, reporting, blocking and moderation safeguards.
+
+## Publish with GitHub Pages
+
+A GitHub Actions workflow has been added at `.github/workflows/pages.yml`.
+
+1. Open this repository on GitHub.
+2. Go to **Settings → Pages**.
+3. Under **Build and deployment**, choose **GitHub Actions** as the source.
+4. Open the **Actions** tab and check the deployment workflow.
+5. When the workflow completes successfully, open:
+
+   https://kabelogopane.github.io/Mzansi-Pages/
+
+The first deployment may take a few minutes. The site is not considered live until the Pages deployment reports success.
+
+## Install the preview
+
+Open the published site in a supported browser. Use the browser's **Install app** or **Add to Home Screen** option if available. Offline caching is activated after the first successful visit.
+
+## Repository structure
+
+- `index.html` — responsive app interface and preview interactions
+- `manifest.webmanifest` — installable app metadata
+- `service-worker.js` — offline app-shell caching
+- `assets/mzansi-icon.svg` — app icon
+- `privacy.html` — preview privacy notice
+- `community-guidelines.html` — draft community rules
+- `docs/PRODUCT-BLUEPRINT.md` — product requirements and direction
+- `.github/workflows/pages.yml` — automatic GitHub Pages deployment
+
+## Production build still required
+
+GitHub Pages hosts static files. It does not provide secure accounts, a database or private messaging. Before launching as a real social platform, connect a secure backend (for example Supabase), implement server-side authorization and database Row Level Security, and complete privacy, age-assurance, moderation and security reviews. Replace the preview privacy notice with a legally reviewed production notice.
+
+Recommended production sequence:
+
+1. Authentication and adult age-assurance integration.
+2. Profiles and privacy settings.
+3. Posts, comments and reactions stored in a database.
+4. Connections and community membership.
+5. Reporting, blocking, moderation and admin tools.
+6. Messaging and notifications.
+7. Security testing, POPIA review and launch readiness checks.
+8. Android app build after the web MVP is stable.
 
 ## Brand
+
 - Name: Mzansi-Pages
 - Tagline: Your People. Your World. Your Pages.
 - Direction: Modern African technology
-- Core palette: Midnight Navy `#101D38`, Electric Blue `#3286E8`, African Gold `#E7B84B`, Cloud White `#F5F7FB`, Violet `#805AD5`
-
-## Run locally
-Open `index.html` in a modern browser. No build step is required for this prototype.
-
-## GitHub Pages
-In repository settings, open **Pages**, select the `main` branch and root folder, then save. When GitHub Pages publishes the site, it will be available at:
-
-https://kabelogopane.github.io/Mzansi-Pages/
-
-## Planned production architecture
-- Web: Next.js + TypeScript
-- Android: React Native + Expo
-- Backend: Supabase
-- Database: PostgreSQL
-- Media storage: Supabase Storage
-- Realtime features: Supabase Realtime
-- Source control: GitHub
-
-## Suggested next milestones
-1. Finalise product requirements and user journeys.
-2. Implement Supabase authentication and database migrations.
-3. Add server-side access control and account security.
-4. Implement profiles, posts, reactions and comments.
-5. Build community membership and moderation.
-6. Add messaging and notifications.
-7. Implement age assurance, reporting, blocking and privacy workflows.
-8. Build and test the Android application.
+- Palette: Midnight Navy `#101D38`, Electric Blue `#3286E8`, African Gold `#E7B84B`, Cloud White `#F5F7FB`, Violet `#805AD5`
