@@ -111,4 +111,4 @@ Use the geometric M monogram as the starting logo concept. Avoid visual clichés
 
 ## Current implementation status
 
-The repository's `index.html` is a front-end demonstration. It does not yet connect to a backend, persist user data or provide production account creation. Do not use it to collect real personal information.
+The repository now contains an installable static PWA preview with offline app-shell caching and browser-local demo posts. It still does not connect to a backend, create real accounts, synchronize data between users or provide production account creation. Do not use it to collect real personal information.
